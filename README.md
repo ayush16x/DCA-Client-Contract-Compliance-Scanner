@@ -76,7 +76,7 @@ OPENAI_API_KEY="sk-YOUR_SECRET_API_KEY_HERE"
 
 .env is git-ignored to protect your API key.
 
-4. Run Both Servers (Backend + Frontend)
+3. Run Both Servers (Backend + Frontend)
 
 Because this is a client–server system, start both components in separate terminals.
 
@@ -94,7 +94,7 @@ streamlit run app.py
 Streamlit will open at:
 http://localhost:8501
 
-5. Usage
+#4. Usage
 
 Open the Streamlit web interface.
 
