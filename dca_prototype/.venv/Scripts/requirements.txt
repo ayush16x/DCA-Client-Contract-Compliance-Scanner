@@ -1,0 +1,10 @@
+streamlit
+pypdf
+python-dotenv
+tiktoken
+chromadb
+pydantic==2.8.2
+langchain==0.2.7
+langchain-community==0.2.6
+langchain-core==0.2.18
+langchain-openai==0.1.19
