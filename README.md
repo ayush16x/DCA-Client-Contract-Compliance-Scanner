@@ -2,14 +2,14 @@
 
 ## ✨ About This Project
 
-The **Dynamic Clause Analyzer (DCA)** is a cutting-edge compliance tool designed to rapidly scan legal contracts (PDFs) and flag deviations from a pre-defined set of internal company rules (the **Playbook**).
+The **Dynamic Clause Analyzer (DCA)** is an advanced compliance tool designed to rapidly scan legal contracts (uploaded as PDFs) and flag deviations from internal company policies (the **Playbook**).
 
-This project uses a robust **Client–Server Architecture** to separate the user interface from the heavy computation:
+The system uses a modern **Client–Server Architecture** to separate the interface from the analysis engine:
 
-- **Backend (FastAPI):** Hosts the core analysis logic, including the RAG pipeline and LLM calls.  
-- **Frontend (Streamlit):** Provides a simple, interactive UI for uploading files and displaying structured results.
+- **Backend (FastAPI):** Hosts the core analysis logic, RAG pipeline, vector retrieval, and LLM calls.  
+- **Frontend (Streamlit):** A simple, interactive UI for file upload and reading results.
 
-The system uses **Retrieval-Augmented Generation (RAG)** to ensure accuracy: the analyzer retrieves the single most relevant policy from the Vector Store before evaluating a contract clause.
+Using **Retrieval-Augmented Generation (RAG)**, the model only analyzes each clause against the *single most relevant* policy from the Playbook, ensuring precise and reliable outputs.
 
 ---
 
@@ -17,10 +17,25 @@ The system uses **Retrieval-Augmented Generation (RAG)** to ensure accuracy: the
 
 | Benefit | Description |
 |--------|-------------|
-| 🔍 **Automated Compliance** | Instantly identifies non-compliant contract language, saving countless hours of manual review. |
-| 💡 **Actionable Redlines** | Provides a summary of risk *and* suggested replacement text to bring clauses into compliance. |
-| 🛡️ **Architectural Scalability** | Streamlit client and FastAPI server can scale, test, and deploy independently. |
-| 🎯 **Focused Analysis (RAG)** | Compares each contract clause only to the *most relevant* internal standard to minimize hallucinations. |
+| 🔍 **Automated Compliance** | Instantly identifies risky or non-compliant contract language. |
+| 💡 **Actionable Redlines** | Provides exact replacement text suggestions for compliance. |
+| 🛡️ **Architectural Scalability** | Backend and frontend scale independently. |
+| 🎯 **Focused Analysis (RAG)** | Minimizes hallucinations by comparing clauses only to the most relevant policy. |
+
+---
+
+## 💻 Tech Stack
+
+This project is built using a modern Python-based stack optimized for LLM applications.
+
+| Category | Technology | Purpose in Project |
+|---------|------------|--------------------|
+| **Backend API** | FastAPI | High-performance async API serving the RAG pipeline. |
+| **Frontend / Client** | Streamlit | Web-based interface for uploading files and displaying results. |
+| **LLM & Embeddings** | OpenAI (gpt-4o-mini) | Intelligence for clause scoring, risk detection, and redline generation. |
+| **RAG Framework** | LangChain | Manages retrieval, prompt templates, and structured output parsing. |
+| **Vector Store** | ChromaDB | In-memory vector database storing the company's internal Playbook. |
+| **Data Validation** | Pydantic | Ensures consistent JSON-structured output from LLM responses. |
 
 ---
 
@@ -30,12 +45,75 @@ The system uses **Retrieval-Augmented Generation (RAG)** to ensure accuracy: the
 
 - Python **3.10+**
 - An **OpenAI API Key** with active billing  
-  (the project uses `gpt-4o-mini` for analysis and embeddings)
+  (uses `gpt-4o-mini` for analysis and embeddings)
 
 ---
 
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/dca_prototype.git
+git clone https://github.com/ayush16x/DCA-Client-Contract-Compliance-Scanner.git
 cd dca_prototype
+
+# Create environment
+python -m venv .venv
+
+# Activate (Windows)
+.venv\Scripts\activate
+
+# Activate (macOS/Linux)
+source .venv/bin/activate
+B. Install Dependencies
+pip install -r requirements.txt
+
+C. Configure API Key (.env file)
+
+Create a .env file:
+
+# .env
+OPENAI_API_KEY="sk-YOUR_SECRET_API_KEY_HERE"
+
+
+.env is git-ignored to protect your API key.
+
+4. Run Both Servers (Backend + Frontend)
+
+Because this is a client–server system, start both components in separate terminals.
+
+🖥️ Terminal 1 — Start Backend (FastAPI)
+uvicorn api_server:app --reload
+
+
+Backend will start at:
+http://127.0.0.1:8000
+
+🌐 Terminal 2 — Start Frontend (Streamlit)
+streamlit run app.py
+
+
+Streamlit will open at:
+http://localhost:8501
+
+5. Usage
+
+Open the Streamlit web interface.
+
+Upload a PDF contract or use the sample text.
+
+Click “Start Compliance Scan (Call API)”.
+
+Streamlit sends your data to the FastAPI backend.
+
+Backend performs:
+
+Vector retrieval from Chroma
+
+Clause-to-policy matching
+
+LLM compliance analysis
+
+Risk classification
+
+Suggested redline generation
+
+Results appear in a clean, structured table.
